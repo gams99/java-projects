@@ -1,4 +1,4 @@
-package com.gams.model;
+package com.gams.forum.model;
 
 public enum StatusTopico {
 

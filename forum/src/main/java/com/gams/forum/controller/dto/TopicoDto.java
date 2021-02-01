@@ -1,6 +1,6 @@
 package com.gams.forum.controller.dto;
 
-import com.gams.model.Topico;
+import com.gams.forum.model.Topico;
 
 import java.time.LocalDateTime;
 import java.util.List;
