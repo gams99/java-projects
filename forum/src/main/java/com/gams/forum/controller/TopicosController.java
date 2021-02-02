@@ -1,21 +1,26 @@
 package com.gams.forum.controller;
 
 import com.gams.forum.controller.dto.TopicoDto;
+import com.gams.forum.controller.form.TopicoForm;
 import com.gams.forum.model.Topico;
+import com.gams.forum.repository.CursoRepository;
 import com.gams.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/topicos")
 public class TopicosController {
 
     @Autowired
     private TopicoRepository topicoRepository;
 
-    @RequestMapping("/topicos")
+    @Autowired
+    private CursoRepository cursoRepository;
+
+    @GetMapping
     public List<TopicoDto> lista(String nomeCurso){
 
         if (nomeCurso == null) {
@@ -25,5 +30,11 @@ public class TopicosController {
             List<Topico> topicos = topicoRepository.findByCursoNome(nomeCurso); //this method is created with TopicoRepository helps,
             return TopicoDto.converter(topicos); // example =>   topicos?nomeCurso=Spring+Boot
         }
+    }
+
+    @PostMapping
+    public void cadastrar(@RequestBody TopicoForm form) { //dto
+        Topico topico = form.converter(cursoRepository);
+        topicoRepository.save(topico);
     }
 }
