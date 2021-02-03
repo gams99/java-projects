@@ -3,11 +3,19 @@ package com.gams.forum.controller.form;
 import com.gams.forum.model.Topico;
 import com.gams.forum.model.Curso;
 import com.gams.forum.repository.CursoRepository;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.repository.NoRepositoryBean;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class TopicoForm {
 
+    @NotNull @NotEmpty @Length(min = 5)
     private String titulo;
+    @NotNull @NotEmpty @Length(min = 15)
     private String mensagem;
+    @NotNull @NotEmpty
     private String nomeCurso;
 
     public String getMensagem() {
