@@ -1,5 +1,6 @@
 package com.gams.forum.controller;
 
+import com.gams.forum.controller.dto.DetalhesDoTopicoDto;
 import com.gams.forum.controller.dto.TopicoDto;
 import com.gams.forum.controller.form.TopicoForm;
 import com.gams.forum.model.Topico;
@@ -43,5 +44,11 @@ public class TopicosController {
 
         URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri(); //criacao de um POST de criacao
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
+    }
+
+    @GetMapping("/{id}") // detalhar um topico
+    public DetalhesDoTopicoDto detalhar(@PathVariable Long id){ //variavel da url e nao do corpo
+        Topico topico = topicoRepository.getOne(id);
+        return new DetalhesDoTopicoDto(topico);
     }
 }
