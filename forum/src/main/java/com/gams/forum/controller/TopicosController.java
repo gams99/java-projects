@@ -2,6 +2,7 @@ package com.gams.forum.controller;
 
 import com.gams.forum.controller.dto.DetalhesDoTopicoDto;
 import com.gams.forum.controller.dto.TopicoDto;
+import com.gams.forum.controller.form.AttTopicoForm;
 import com.gams.forum.controller.form.TopicoForm;
 import com.gams.forum.model.Topico;
 import com.gams.forum.repository.CursoRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -50,5 +52,13 @@ public class TopicosController {
     public DetalhesDoTopicoDto detalhar(@PathVariable Long id){ //variavel da url e nao do corpo
         Topico topico = topicoRepository.getOne(id);
         return new DetalhesDoTopicoDto(topico);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional //para att no db
+    public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AttTopicoForm form) {
+        Topico topico = form.atualizar(id, topicoRepository);
+
+        return ResponseEntity.ok(new TopicoDto(topico));
     }
 }
