@@ -6,8 +6,11 @@ import com.gams.forum.model.Topico;
 import com.gams.forum.repository.CursoRepository;
 import com.gams.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,8 +36,11 @@ public class TopicosController {
     }
 
     @PostMapping
-    public void cadastrar(@RequestBody TopicoForm form) { //dto
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) { //dto e metodo para pegar URI do corpo
         Topico topico = form.converter(cursoRepository);
         topicoRepository.save(topico);
+
+        URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri(); //criacao de um POST de criacao
+        return ResponseEntity.created(uri).body(new TopicoDto(topico));
     }
 }
