@@ -40,6 +40,7 @@ public class TopicosController {
     }
 
     @PostMapping
+    @Transactional //para att no db
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) { //dto, metodo para pegar URI do corpo, valid para validar com BEAN VALIDATION
         Topico topico = form.converter(cursoRepository);
         topicoRepository.save(topico);
@@ -61,4 +62,13 @@ public class TopicosController {
 
         return ResponseEntity.ok(new TopicoDto(topico));
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional //para att no db
+    public ResponseEntity<?> remover(@PathVariable Long id) {
+        topicoRepository.deleteById(id);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
