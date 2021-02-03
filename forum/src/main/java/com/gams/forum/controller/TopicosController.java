@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -50,25 +51,40 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}") // detalhar um topico
-    public DetalhesDoTopicoDto detalhar(@PathVariable Long id){ //variavel da url e nao do corpo
-        Topico topico = topicoRepository.getOne(id);
-        return new DetalhesDoTopicoDto(topico);
+    public ResponseEntity <DetalhesDoTopicoDto> detalhar(@PathVariable Long id){ //variavel da url e nao do corpo
+        Optional<Topico> topico = topicoRepository.findById(id);
+        if(topico.isPresent()){
+            return ResponseEntity.ok(new DetalhesDoTopicoDto(topico.get()));
+        }
+            return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
     @Transactional //para att no db
     public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AttTopicoForm form) {
-        Topico topico = form.atualizar(id, topicoRepository);
+        Optional<Topico> optional = topicoRepository.findById(id);
+        if(optional.isPresent()){
+            Topico topico = form.atualizar(id, topicoRepository);
+            return ResponseEntity.ok(new TopicoDto(topico));
+        }
 
-        return ResponseEntity.ok(new TopicoDto(topico));
+        return ResponseEntity.notFound().build();
     }
+
+
+
 
     @DeleteMapping("/{id}")
     @Transactional //para att no db
     public ResponseEntity<?> remover(@PathVariable Long id) {
-        topicoRepository.deleteById(id);
+        Optional<Topico> optional = topicoRepository.findById(id);
+        if(optional.isPresent()) {
+            topicoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
+
     }
 
 }
