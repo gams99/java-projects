@@ -8,6 +8,7 @@ import com.gams.forum.model.Topico;
 import com.gams.forum.repository.CursoRepository;
 import com.gams.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,7 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @GetMapping
+    @Cacheable(value="listaDeTopicos")
     public Page<TopicoDto> lista(@RequestParam (required = false) String nomeCurso, //RequestParam p receive param in url
                                 @PageableDefault(sort = "id", page = 0, size = 10) Pageable paginacao){ // more easier pagination -> /topicos?page=0&size=10&sort=id,asc
 
