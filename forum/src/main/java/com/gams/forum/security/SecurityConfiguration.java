@@ -1,5 +1,6 @@
 package com.gams.forum.security;
 
+import com.gams.forum.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private TokenServices tokenService;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Override //manual authentication
     @Bean //to spring use
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -49,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .anyRequest().authenticated()
         .and().csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().addFilterBefore(new AutenticacaoViaTokenFIlter(tokenService), UsernamePasswordAuthenticationFilter.class); // filter register
+        .and().addFilterBefore(new AutenticacaoViaTokenFIlter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class); // filter register
     }
 
     //config. de recursos estasticos(js, css, img, etc)

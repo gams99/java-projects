@@ -1,5 +1,9 @@
 package com.gams.forum.security;
 
+import com.gams.forum.model.Usuario;
+import com.gams.forum.repository.UsuarioRepository;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -11,9 +15,11 @@ import java.io.IOException;
 public class AutenticacaoViaTokenFIlter extends OncePerRequestFilter {
 
     private TokenServices tokenService;
+    private UsuarioRepository repository;
 
-    public AutenticacaoViaTokenFIlter(TokenServices tokenService) {
+    public AutenticacaoViaTokenFIlter(TokenServices tokenService, UsuarioRepository repository) {
         this.tokenService = tokenService;
+        this.repository = repository;
     }
 
     @Override
@@ -22,12 +28,21 @@ public class AutenticacaoViaTokenFIlter extends OncePerRequestFilter {
 
         String token = recuperarToken(request);
         boolean valido = tokenService.isTokenValido(token);
-        System.out.println(valido);
+        if(valido) {
+            autenticarCliente(token);
+        }
 
         filterChain.doFilter(request, response);
     }
 
-        private String recuperarToken(HttpServletRequest request){
+    private void autenticarCliente(String token) {
+        Long idUsuario = tokenService.getIdUsuario(token);
+        Usuario usuario = repository.findById(idUsuario).get();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private String recuperarToken(HttpServletRequest request){
             String token = request.getHeader("Authorization");
             if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
                 return null;
