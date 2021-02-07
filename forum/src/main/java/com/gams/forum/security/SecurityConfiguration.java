@@ -24,6 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private AutenticacaoService autenticacaoService;
 
+    @Autowired
+    private TokenServices tokenService;
+
     @Override //manual authentication
     @Bean //to spring use
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -46,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .anyRequest().authenticated()
         .and().csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().addFilterBefore(new AutenticacaoViaTokenFIlter(), UsernamePasswordAuthenticationFilter.class);
+        .and().addFilterBefore(new AutenticacaoViaTokenFIlter(tokenService), UsernamePasswordAuthenticationFilter.class); // filter register
     }
 
     //config. de recursos estasticos(js, css, img, etc)
