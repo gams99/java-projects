@@ -28,7 +28,7 @@ public class SwaggerConfigurations {
                                 new ParameterBuilder()
                                         .name("Authorization")
                                         .description("Header para Token JWT")
-                                        .modelRef(new ModelRef("string"))
+                                         .modelRef(new ModelRef("string"))
                                         .parameterType("header")
                                         .required(false)
                                         .build()));
