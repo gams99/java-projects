@@ -14,26 +14,26 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class CursoReposityTest {
 
-    @Autowired
-    private CursoRepository repository;
-
 //    @Autowired
-//    private TestEntityManager em;
-
-    @Test
-    public void shouldFindByNome() {
-
-        String nomeCurso = "HTML 5";
-
-//          Curso html5 = new Curso();
-//        html5.setNome(nomeCurso);
-//        html5.setCategoria("Programacao");
-//        em.persist(nomeCurso);
-
-        Curso curso = repository.findByNome(nomeCurso);
-        Assertions.assertNotNull(curso);
-        Assertions.assertEquals(nomeCurso, curso.getNome());
-    }
+//    private CursoRepository repository;
+//
+////    @Autowired
+////    private TestEntityManager em;
+//
+//    @Test
+//    public void shouldFindByNome() {
+//
+//        String nomeCurso = "HTML 5";
+//
+////          Curso html5 = new Curso();
+////        html5.setNome(nomeCurso);
+////        html5.setCategoria("Programacao");
+////        em.persist(nomeCurso);
+//
+//        Curso curso = repository.findByNome(nomeCurso);
+//        Assertions.assertNotNull(curso);
+//        Assertions.assertEquals(nomeCurso, curso.getNome());
+//    }
 
 //    @Test
 //    public void shouldNotFindByNome() {
