@@ -4,9 +4,14 @@ import br.com.gams.leilao.dominio.Avaliador;
 import br.com.gams.leilao.dominio.Lance;
 import br.com.gams.leilao.dominio.Leilao;
 import br.com.gams.leilao.dominio.Usuario;
+import org.junit.Assert;
+import org.junit.Test;
+
 
 public class TesteDoAvaliador {
-    public static void main(String[] args) {
+
+    @Test
+    public void deveEntenderLancesEmOrdemCrescente(){
         Usuario jose = new Usuario("Jose");
         Usuario joao = new Usuario("Joao");
         Usuario maria = new Usuario("Maria");
@@ -20,7 +25,11 @@ public class TesteDoAvaliador {
         Avaliador leiloeiro = new Avaliador();
         leiloeiro.avalia(leilao);
 
-        System.out.println("Maior lance:"+leiloeiro.getMaiorLance());
-        System.out.println("Menor lance:"+ leiloeiro.getMenorLance());
+        double maiorEsperado = 700.0;
+        double menorEsperado = 230.0;
+
+        Assert.assertEquals(maiorEsperado, leiloeiro.getMaiorLance(), 0.00001);
+
+        Assert.assertEquals(menorEsperado, leiloeiro.getMenorLance(), 0.00001);
     }
 }
