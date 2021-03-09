@@ -17,14 +17,16 @@ public class Avaliador {
         for(Lance lance : leilao.getLances()){
             if(lance.getValor() > maiorDeTodos) maiorDeTodos = lance.getValor();
             if(lance.getValor() < menorDeTodos) menorDeTodos = lance.getValor();
+            //media
             total+= lance.getValor();
         }
+        //media
         if(total == 0) {
             media = 0;
             return;
         }
         media = total/leilao.getLances().size();
-
+        //3maiores
         maiores = new ArrayList<Lance>(leilao.getLances());
         Collections.sort(maiores, new Comparator<Lance>() {
 
