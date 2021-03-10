@@ -26,6 +26,7 @@ public class Avaliador {
             return;
         }
         media = total/leilao.getLances().size();
+
         //3maiores
         maiores = new ArrayList<Lance>(leilao.getLances());
         Collections.sort(maiores, new Comparator<Lance>() {
