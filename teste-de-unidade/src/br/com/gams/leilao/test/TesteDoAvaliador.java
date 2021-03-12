@@ -139,7 +139,6 @@ public class TesteDoAvaliador {
                 .lance(maria, 200.0)
                 .lance(joao, 300.0)
                 .constroi();
-
         criaAvaliador();
         leiloeiro.avalia(leilao);
 
