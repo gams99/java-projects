@@ -5,6 +5,7 @@ import br.com.gams.leilao.dominio.Avaliador;
 import br.com.gams.leilao.dominio.Lance;
 import br.com.gams.leilao.dominio.Leilao;
 import br.com.gams.leilao.dominio.Usuario;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +27,14 @@ public class TesteDoAvaliador {
         this.jose = new Usuario("Jose");
         this.joao = new Usuario("Joao");
         this.maria = new Usuario("Maria");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void naoDeveAvaliarLeiloesSemNenhumLance(){
+            Leilao leilao = new CriadorDeLeilao().para("Headset HyperX").constroi();
+
+            leiloeiro.avalia(leilao);
+            Assert.fail();
     }
 
     @Test
@@ -96,20 +105,6 @@ public class TesteDoAvaliador {
 
         System.out.println(leiloeiro.getMedia());
         assertEquals(mediaEsperada, leiloeiro.getMedia(), 0.00001);
-    }
-
-    @Test
-    public void testaMediaDeZeroLance(){
-
-        // acao
-        Leilao leilao = new CriadorDeLeilao().para("PS5")
-                .constroi();
-
-        leiloeiro.avalia(leilao);
-
-        //validacao
-        assertEquals(0, leiloeiro.getMedia(), 0.0001);
-
     }
 
     @Test
